@@ -3,8 +3,8 @@ import gzip
 import json
 from typing import List
 
-INPUT_PATH = os.path.join("..", "input")
-OUTPUT_PATH = os.path.join("..", "output")
+INPUT_PATH = os.path.join("..", "..", "input")
+OUTPUT_PATH = os.path.join("..", "..", "output")
 
 
 class BaseScriptsFunctions:
