@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="5" time="1.013" timestamp="2023-11-08T18:23:28.142189" hostname="lnb024561bhz"><testcase classname="tests.augmentor.test_base_script_functions.TestBaseScriptsFunctions" name="test_load_json_data_file_not_found" time="0.002" /><testcase classname="tests.augmentor.test_base_script_functions.TestBaseScriptsFunctions" name="test_load_json_data_file_format_error" time="0.001" /><testcase classname="tests.augmentor.test_base_script_functions.TestBaseScriptsFunctions" name="test_save_processed_file" time="0.001"><failure message="AssertionError: assert False&#10; +  where False = &lt;function exists at 0x7f4924d75ea0&gt;('test_output/output_data.json.gz')&#10; +    where &lt;function exists at 0x7f4924d75ea0&gt; = &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt;.exists&#10; +      where &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt; = os.path&#10; +    and   'test_output/output_data.json.gz' = &lt;function join at 0x7f4924d76710&gt;('test_output', 'output_data.json.gz')&#10; +      where &lt;function join at 0x7f4924d76710&gt; = &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt;.join&#10; +        where &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt; = os.path&#10; +      and   'test_output' = &lt;test_base_script_functions.TestBaseScriptsFunctions object at 0x7f490c782bf0&gt;.test_output_dir">self = &lt;test_base_script_functions.TestBaseScriptsFunctions object at 0x7f490c782bf0&gt;
+
+    def test_save_processed_file(self):
+        # Test data
+        test_data = [{"name": "John", "age": 30}, {"name": "Alice", "age": 25}]
+    
+        # Save the data
+        file_name = "output_data.json.gz"
+        BaseScriptsFunctions.save_processed_file(file_name, test_data)
+    
+        # Check if the file was saved
+&gt;       assert os.path.exists(os.path.join(self.test_output_dir, file_name))
+E       AssertionError: assert False
+E        +  where False = &lt;function exists at 0x7f4924d75ea0&gt;('test_output/output_data.json.gz')
+E        +    where &lt;function exists at 0x7f4924d75ea0&gt; = &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt;.exists
+E        +      where &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt; = os.path
+E        +    and   'test_output/output_data.json.gz' = &lt;function join at 0x7f4924d76710&gt;('test_output', 'output_data.json.gz')
+E        +      where &lt;function join at 0x7f4924d76710&gt; = &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt;.join
+E        +        where &lt;module 'posixpath' from '/usr/lib/python3.10/posixpath.py'&gt; = os.path
+E        +      and   'test_output' = &lt;test_base_script_functions.TestBaseScriptsFunctions object at 0x7f490c782bf0&gt;.test_output_dir
+
+tests/augmentor/test_base_script_functions.py:47: AssertionError</failure></testcase><testcase classname="tests.augmentor.test_base_script_functions.TestBaseScriptsFunctions" name="test_save_processed_file_exception" time="0.001"><failure message="Failed: DID NOT RAISE &lt;class 'Exception'&gt;">self = &lt;test_base_script_functions.TestBaseScriptsFunctions object at 0x7f490c782d40&gt;
+
+    def test_save_processed_file_exception(self):
+        # Test data
+        test_data = [{"name": "John", "age": 30}, {"name": "Alice", "age": 25}]
+    
+        # Create a read-only directory for testing an exception
+&gt;       with pytest.raises(Exception):
+E       Failed: DID NOT RAISE &lt;class 'Exception'&gt;
+
+tests/augmentor/test_base_script_functions.py:54: Failed</failure></testcase><testcase classname="tests.augmentor.test_base_script_functions.TestBaseScriptsFunctions" name="test_load_and_save_json_data" time="0.001"><failure message="FileNotFoundError: File not found: test_output/test_data.json.gz">cls = &lt;class 'augmentor.base_script_functions.BaseScriptsFunctions'&gt;, file_path = 'test_output/test_data.json.gz'
+
+    @classmethod
+    def load_json_data(cls, file_path: str):
+        """Open and load the json data"""
+        json_data = []
+        try:
+&gt;           with gzip.open(
+                file_path, "rt", encoding="utf-8"
+            ) as file:
+
+src/augmentor/base_script_functions.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/usr/lib/python3.10/gzip.py:58: in open
+    binary_file = GzipFile(filename, gz_mode, compresslevel)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError("'GzipFile' object has no attribute 'fileobj'") raised in repr()] GzipFile object at 0x7f490c7cdfc0&gt;
+filename = 'test_output/test_data.json.gz', mode = 'rb', compresslevel = 9, fileobj = None, mtime = None
+
+    def __init__(self, filename=None, mode=None,
+                 compresslevel=_COMPRESS_LEVEL_BEST, fileobj=None, mtime=None):
+        """Constructor for the GzipFile class.
+    
+        At least one of fileobj and filename must be given a
+        non-trivial value.
+    
+        The new class instance is based on fileobj, which can be a regular
+        file, an io.BytesIO object, or any other object which simulates a file.
+        It defaults to None, in which case filename is opened to provide
+        a file object.
+    
+        When fileobj is not None, the filename argument is only used to be
+        included in the gzip file header, which may include the original
+        filename of the uncompressed file.  It defaults to the filename of
+        fileobj, if discernible; otherwise, it defaults to the empty string,
+        and in this case the original filename is not included in the header.
+    
+        The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', or
+        'xb' depending on whether the file will be read or written.  The default
+        is the mode of fileobj if discernible; otherwise, the default is 'rb'.
+        A mode of 'r' is equivalent to one of 'rb', and similarly for 'w' and
+        'wb', 'a' and 'ab', and 'x' and 'xb'.
+    
+        The compresslevel argument is an integer from 0 to 9 controlling the
+        level of compression; 1 is fastest and produces the least compression,
+        and 9 is slowest and produces the most compression. 0 is no compression
+        at all. The default is 9.
+    
+        The mtime argument is an optional numeric timestamp to be written
+        to the last modification time field in the stream when compressing.
+        If omitted or None, the current time is used.
+    
+        """
+    
+        if mode and ('t' in mode or 'U' in mode):
+            raise ValueError("Invalid mode: {!r}".format(mode))
+        if mode and 'b' not in mode:
+            mode += 'b'
+        if fileobj is None:
+&gt;           fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
+E           FileNotFoundError: [Errno 2] No such file or directory: 'test_output/test_data.json.gz'
+
+/usr/lib/python3.10/gzip.py:174: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+self = &lt;test_base_script_functions.TestBaseScriptsFunctions object at 0x7f490c781e70&gt;
+
+    def test_load_and_save_json_data(self):
+        # Test data
+        test_data = [{"name": "John", "age": 30}, {"name": "Alice", "age": 25}]
+    
+        # Save the data
+        input_file_name = "test_data.json.gz"
+        BaseScriptsFunctions.save_processed_file(os.path.join(self.test_output_dir, input_file_name), test_data)
+    
+        # Load and save the data
+        output_file_name = "output_test_data.json.gz"
+&gt;       loaded_data = BaseScriptsFunctions.load_json_data(os.path.join(self.test_output_dir, input_file_name))
+
+tests/augmentor/test_base_script_functions.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'augmentor.base_script_functions.BaseScriptsFunctions'&gt;, file_path = 'test_output/test_data.json.gz'
+
+    @classmethod
+    def load_json_data(cls, file_path: str):
+        """Open and load the json data"""
+        json_data = []
+        try:
+            with gzip.open(
+                file_path, "rt", encoding="utf-8"
+            ) as file:
+                for line in file:
+                    json_data.append(json.loads(line))
+            return json_data
+        except FileNotFoundError:
+&gt;           raise FileNotFoundError(f"File not found: {file_path}")
+E           FileNotFoundError: File not found: test_output/test_data.json.gz
+
+src/augmentor/base_script_functions.py:22: FileNotFoundError</failure></testcase></testsuite></testsuites>
