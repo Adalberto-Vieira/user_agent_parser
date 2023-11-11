@@ -19,7 +19,7 @@ repos:
     rev: 23.9.1
     hooks:
     -   id: black
-        exclude: ^dependencies/
+        exclude: ^tests/
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.1.0
     hooks:
@@ -31,4 +31,4 @@ repos:
             'flake8-implicit-str-concat',
             'pydocstyle>=5.0.0',
         ]
-        exclude: ^dependencies/
+        exclude: ^tests/
